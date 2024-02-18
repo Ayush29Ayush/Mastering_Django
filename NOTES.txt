@@ -1,0 +1,14 @@
+1. Create a virtual environment using the command: python -m venv venv
+2. Activate the virtual environment using the command: venv\Scripts\activate
+3. Store the dependencies in the requirements.txt file using the command: pip freeze > requirements.txt
+4. Install the dependencies using the command: pip install -r requirements.txt
+5. Type django-admin in the command line to see the available commands
+
+#! Creating new project and app
+6. Create a new project using the command: django-admin startproject firstproject .
+7. Create an app using the command: python manage.py startapp firstapp
+8. Add the app to the settings.py file installed apps
+
+#! Database Schema Designing
+9. Understand the requirement and create a database schema with relationships like one to one, one to many, many to many.
+
