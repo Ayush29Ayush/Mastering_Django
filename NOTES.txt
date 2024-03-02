@@ -12,3 +12,7 @@
 #! Database Schema Designing
 9. Understand the requirement and create a database schema with relationships like one to one, one to many, many to many.
 
+#! Creating models, model functions and model managers
+10. Create models and use command python manage.py makemigrations to create migrations and python manage.py migrate to migrate the changes to the database.
+11. Its better to use classmethod rather than using staticmethod for creating such custom functions
+12. Model Manager is present in the model by default. Since we want to use our custom manager, we are defining objects = CartManager(), otherwise by default, it will use its default django manager. This is the objects in the Cart.objects.create() command, which we want to override so we are using create_cart rather than the default create. Now the command will be Cart.objects.create_cart() rather than Cart.objects.create()
