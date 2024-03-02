@@ -73,3 +73,7 @@ class Order(models.Model):
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.IntegerField(choices=status_choices, default=1)
+
+class Deal(models.Model):
+    user = models.ManyToManyField(User)
+    deal_name = models.CharField(max_length=255)
