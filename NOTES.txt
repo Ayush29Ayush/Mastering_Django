@@ -20,3 +20,8 @@
 #! All about django admin page
 13. Register models in admin.py to view and manage data on admin page using admin.site.register(ModelName)
 14. We have created custom admin class CartAdmin by inheriting from admin.ModelAdmin. We can override default admin functionality like list_display, search_fields etc.
+
+#! All about Custom User Model
+15. Create a custom user model by inheriting from AbstractUser or by inheriting (AbstractBaseUser, PermissionsMixin) and override required fields.
+16. Register the custom user model in admin.py and settings.py AUTH_USER_MODEL.
+17. Create custom managers and forms for the custom user model.
