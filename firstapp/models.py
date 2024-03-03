@@ -3,8 +3,48 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.utils import timezone
 
+from django.contrib.auth.models import AbstractUser, AbstractBaseUser
+# from django.utils.translation import ugettext_lazy as _ #! ugettext_lazy got deprecated
+from django.utils.translation import gettext_lazy as _
+
+from .managers import CustomUserManager
+
+from django.contrib.auth.models import PermissionsMixin
+
 # Create your models here.
 
+#! Here we are inheriting the default User Model by inheriting the AbstractUser. An abstract base class implements a fully featured User model with admin-compliant permissions. Username and password are required. Other fields are optional. AbstractUser equals to the User Model provided by django by default with all the necessary fields
+# class  CustomUser(AbstractUser):
+# class  CustomUser(AbstractUser):
+#     username = None
+#     email = models.EmailField(_('email address'), unique=True)
+    
+#     #! Here we are defining the USERNAME_FIELD as email and REQUIRED_FIELDS as empty list. This is because we are using email as the username and not the username. This is the reason why we set username = None earlier.
+#     USERNAME_FIELD = 'email'
+#     REQUIRED_FIELDS = []
+    
+#     #! Here we have defined a CustomUserManager named model manager to handle the user model
+#     objects = CustomUserManager()
+    
+#     def __str__(self):
+#         return self.email
+class  CustomUser(AbstractBaseUser, PermissionsMixin):
+    # username = None
+    
+    email = models.EmailField(_('email address'), unique=True)
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    date_joined = models.DateTimeField(default=timezone.now)
+    
+    #! Here we are defining the USERNAME_FIELD as email and REQUIRED_FIELDS as empty list. This is because we are using email as the username and not the username. This is the reason why we set username = None earlier.
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+    
+    #! Here we have defined a CustomUserManager named model manager to handle the user model
+    objects = CustomUserManager()
+    
+    def __str__(self):
+        return self.email
 
 class Product(models.Model):
     product_id = models.AutoField(primary_key=True)
@@ -43,7 +83,8 @@ class CartManager(models.Manager):
     
 class Cart(models.Model):
     cart_id = models.AutoField(primary_key=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     created_on = models.DateTimeField(default=timezone.now)
     
     #! Since we want to use our custom manager, we are defining objects = CartManager(), otherwise by default, it will use its default django manager. This is the objects in the Cart.objects.create() command, which we want to override so we are using create_cart rather than the default create. Now the command will be Cart.objects.create_cart() rather than Cart.objects.create()
@@ -71,9 +112,11 @@ class Order(models.Model):
         (3, "Shipped"),
         (4, "Delivered"),
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     status = models.IntegerField(choices=status_choices, default=1)
 
 class Deal(models.Model):
-    user = models.ManyToManyField(User)
+    user = models.ManyToManyField(CustomUser)
+    # user = models.ManyToManyField(User)
     deal_name = models.CharField(max_length=255)
