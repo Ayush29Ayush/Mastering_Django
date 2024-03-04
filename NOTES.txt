@@ -25,3 +25,8 @@
 15. Create a custom user model by inheriting from AbstractUser or by inheriting (AbstractBaseUser, PermissionsMixin) and override required fields.
 16. Register the custom user model in admin.py and settings.py AUTH_USER_MODEL.
 17. Create custom managers and forms for the custom user model.
+
+#! All about Django Multiple User Types
+18. To use multiselect in a form, use this package => https://pypi.org/project/django-multiselectfield/
+19. Check all the 3 approaches to create user types in the models.py file.
+20. Register the models in admin.py.
