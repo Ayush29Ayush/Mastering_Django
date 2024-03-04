@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from firstapp.forms import CustomUserChangeForm, CustomUserCreationForm
 
-from firstapp.models import Product, Cart, ProductInCart, Order, Deal, CustomUser
+from firstapp.models import Product, Cart, ProductInCart, Order, Deal, CustomUser, Customer, Seller
 
 # from firstapp.models import Product, Cart, ProductInCart, Order
 
@@ -27,7 +27,8 @@ class CustomUserAdmin(UserAdmin):
     list_filter = ('email', 'is_staff', 'is_active',)
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Permissions', {'fields': ('is_staff', 'is_active')}),
+        # ('Permissions', {'fields': ('is_staff', 'is_active', 'usertype')}),
+        ('Permissions', {'fields': ('is_staff', 'is_active', 'is_customer', 'is_seller')}),
     )
     add_fieldsets = (
         (None, {
@@ -179,3 +180,5 @@ admin.site.register(Product)
 admin.site.register(ProductInCart)
 admin.site.register(Order)
 admin.site.register(Deal, DealAdmin)
+admin.site.register(Customer)
+admin.site.register(Seller)
