@@ -34,3 +34,4 @@
 #! All about Django Multiple User Types using Proxy Models | Custom data Fields
 21. Create proxy models for each user type by inheriting from the AbstractBaseUser and overriding fields.
 22. Check models.py to understand about proxy models and their implementation.
+23. Register the models in admin.py.
