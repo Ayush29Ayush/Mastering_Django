@@ -30,3 +30,7 @@
 18. To use multiselect in a form, use this package => https://pypi.org/project/django-multiselectfield/
 19. Check all the 3 approaches to create user types in the models.py file.
 20. Register the models in admin.py.
+
+#! All about Django Multiple User Types using Proxy Models | Custom data Fields
+21. Create proxy models for each user type by inheriting from the AbstractBaseUser and overriding fields.
+22. Check models.py to understand about proxy models and their implementation.
