@@ -12,6 +12,8 @@ from .managers import CustomUserManager
 
 from django.contrib.auth.models import PermissionsMixin
 
+from django.db.models import Q 
+
 # Create your models here.
 
 #! Here we are inheriting the default User Model by inheriting the AbstractUser. An abstract base class implements a fully featured User model with admin-compliant permissions. Username and password are required. Other fields are optional. AbstractUser equals to the User Model provided by django by default with all the necessary fields
@@ -36,6 +38,8 @@ from django.contrib.auth.models import PermissionsMixin
 # class UserType(models.Model):
 #     CUSTOMER = 1
 #     SELLER = 2
+
+
 #     TYPE_CHOICES = (
 #         (SELLER, 'Seller'),
 #         (CUSTOMER, 'Customer')
@@ -55,8 +59,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     #* Here we are defining is_customer and is_seller using 3 approaches
     #! Approach 1
-    is_customer = models.BooleanField(default=True)
-    is_seller = models.BooleanField(default = False)
+    # is_customer = models.BooleanField(default=True)
+    # is_seller = models.BooleanField(default = False)
     #! Approach 2
     # type = (
     #     (1, 'Seller'),
@@ -65,6 +69,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     # user_type = models.IntegerField(choices = type, default=1)
     #! Approach 3
     # usertype = models.ManyToManyField(UserType)
+    
+    class Types(models.TextChoices):
+        SELLER = 'Seller', 'SELLER'
+        CUSTOMER = 'Customer', 'CUSTOMER'
+        
+    default_type = Types.CUSTOMER
+    
+    type = models.CharField(_('Type') , max_length=255, choices=Types.choices, default=default_type)
 
     #! Here we are defining the USERNAME_FIELD as email and REQUIRED_FIELDS as empty list. This is because we are using email as the username and not the username. This is the reason why we set username = None earlier.
     USERNAME_FIELD = "email"
@@ -75,16 +87,65 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+    
+    # if not the code below then taking default value in User model not in proxy models
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.type = self.default_type
+            # self.type.append(self.default_type)
+        return super().save(*args, **kwargs)
 
-class Customer(models.Model):
+class CustomerAdditional(models.Model):
     user = models.OneToOneField(CustomUser, on_delete = models.CASCADE)
     address = models.CharField(max_length=1000)
 
 
-class Seller(models.Model):
+class SellerAdditional(models.Model):
     user = models.OneToOneField(CustomUser, on_delete = models.CASCADE)
     gst = models.CharField(max_length=10)
     warehouse_location = models.CharField(max_length=1000)
+
+
+# Model Managers for proxy models
+class SellerManager(models.Manager):
+    def get_queryset(self, *args, **kwargs):
+        #return super().get_queryset(*args, **kwargs).filter(type = CustomUser.Types.SELLER)
+        return super().get_queryset(*args, **kwargs).filter(Q(type__contains = CustomUser.Types.SELLER))
+
+class CustomerManager(models.Manager):
+    def get_queryset(self, *args, **kwargs):
+        #return super().get_queryset(*args, **kwargs).filter(type = CustomUser.Types.CUSTOMER)
+        return super().get_queryset(*args, **kwargs).filter(Q(type__contains = CustomUser.Types.CUSTOMER))
+
+
+
+# Proxy Models. They do not create a seperate table
+class Seller(CustomUser):
+    default_type = CustomUser.Types.SELLER
+    objects = SellerManager()
+    class Meta:
+        proxy = True
+    
+    def sell(self):
+        print("I can sell")
+
+    @property
+    def showAdditional(self):
+        return self.selleradditional
+
+class Customer(CustomUser):
+    default_type = CustomUser.Types.CUSTOMER
+    objects = CustomerManager()
+    class Meta:
+        proxy = True 
+
+    def buy(self):
+        print("I can buy")
+
+    @property
+    def showAdditional(self):
+        return self.customeradditional
+
     
 class Product(models.Model):
     product_id = models.AutoField(primary_key=True)
