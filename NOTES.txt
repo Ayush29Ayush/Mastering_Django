@@ -14,8 +14,8 @@
 
 #! Creating models, model functions and model managers
 10. Create models and use command python manage.py makemigrations to create migrations and python manage.py migrate to migrate the changes to the database.
-11. Its better to use classmethod rather than using staticmethod for creating such custom functions
-12. Model Manager is present in the model by default. Since we want to use our custom manager, we are defining objects = CartManager(), otherwise by default, it will use its default django manager. This is the objects in the Cart.objects.create() command, which we want to override so we are using create_cart rather than the default create. Now the command will be Cart.objects.create_cart() rather than Cart.objects.create()
+11. It's better to use classmethod rather than using staticmethod for creating such custom functions
+12. Model Manager is present in the model by default. Since we want to use our custom manager, we are defining objects = CartManager(), otherwise by default, it will use its default django manager. This is the objects in the Cart.objects.create() command, which we want to override, so we are using create_cart rather than the default create. Now the command will be Cart.objects.create_cart() rather than Cart.objects.create()
 
 #! All about django admin page
 13. Register models in admin.py to view and manage data on admin page using admin.site.register(ModelName)
@@ -30,3 +30,7 @@
 18. To use multiselect in a form, use this package => https://pypi.org/project/django-multiselectfield/
 19. Check all the 3 approaches to create user types in the models.py file.
 20. Register the models in admin.py.
+
+#! All about Django Templates and function and class based views
+21. Class based views are more preferable than function based views because they can inherit the functionalities provided by django, and we can override the functionalities as per our requirement. For function based views, we have to write all the functionalities from scratch.
+22. MVT (Model, View, Template) explains the flow of data in django.
