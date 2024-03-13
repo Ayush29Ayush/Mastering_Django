@@ -38,3 +38,7 @@
 24. Functions and variables: Use lowercase letters with words separated by underscores (snake_case). This improves readability by making it clear that these are functions or variables.
 25. Classes: Use CamelCase, where each word starts with a capital letter. This convention helps distinguish class names from functions and variables.
 26. You can pass context variables to the template by using the render function in the view.
+
+#! All about Django forms
+27. Django forms are used to create forms in the templates.
+28. Use namespace to avoid conflicts between different apps in the project along with their urls names that are being used in the templates.
