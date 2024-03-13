@@ -8,5 +8,20 @@
 
 {% block body %}
     Hello
+    <br>
+    This is my age: {{age}}
+    <br>
+    This is my array: {{array}}
+    <br>
+    {% for i in array %}
+        {{i}}
+    {% endfor %}
+    <br>
+    This is my dictionary: {{dic}}
+    <br>
+    {% for key,value in dic.items %}
+        {{key}}: {{value}}
+    {% endfor %}
+        
 {% endblock body %}
     
