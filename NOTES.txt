@@ -34,3 +34,7 @@
 #! All about Django Templates and function and class based views
 21. Class based views are more preferable than function based views because they can inherit the functionalities provided by django, and we can override the functionalities as per our requirement. For function based views, we have to write all the functionalities from scratch.
 22. MVT (Model, View, Template) explains the flow of data in django.
+23. Refer this url => https://ccbv.co.uk/
+24. Functions and variables: Use lowercase letters with words separated by underscores (snake_case). This improves readability by making it clear that these are functions or variables.
+25. Classes: Use CamelCase, where each word starts with a capital letter. This convention helps distinguish class names from functions and variables.
+26. You can pass context variables to the template by using the render function in the view.
