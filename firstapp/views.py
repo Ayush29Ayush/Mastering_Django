@@ -1,3 +1,4 @@
+from django.forms import ValidationError
 from django.shortcuts import render, HttpResponse
 from django.views.generic import TemplateView
 
@@ -32,3 +33,15 @@ class Index(TemplateView):
         context_old = super().get_context_data(**kwargs)
         context = {"age": age, "array": arr, "dic": dic, "context_old": context_old}
         return context
+
+
+def contactus(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        phone = request.POST["phone"]
+        if len(phone) < 10 or len(phone) > 10:
+            raise ValidationError("Phone number length is not right")
+        query = request.POST["query"]
+        print(name + " " + email + " " + phone + " " + query)
+    return render(request, "firstapp/contactus.html")
