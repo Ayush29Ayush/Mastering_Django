@@ -37,11 +37,14 @@ class Index(TemplateView):
 
 def contactus(request):
     if request.method == "POST":
+        print(request.POST)
         name = request.POST.get("name")
         email = request.POST.get("email")
         phone = request.POST["phone"]
         if len(phone) < 10 or len(phone) > 10:
             raise ValidationError("Phone number length is not right")
         query = request.POST["query"]
+        
         print(name + " " + email + " " + phone + " " + query)
+        
     return render(request, "firstapp/contactus.html")
