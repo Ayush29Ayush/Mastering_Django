@@ -43,5 +43,5 @@
 27. Django forms are used to create forms in the templates.
 28. Use namespace to avoid conflicts between different apps in the project along with their urls names that are being used in the templates.
 29. Use csrf_token in the form to avoid csrf attacks.
-
-Resume from 30 mins. 
+30. Use is_valid to check if the form is valid and use cleaned_data to get the cleaned data.
+31. Use forms.Form to create a django form and forms.ModelForm to create forms for the models.
