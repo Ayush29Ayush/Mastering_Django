@@ -2,6 +2,8 @@ from django.forms import ValidationError
 from django.shortcuts import render, HttpResponse
 from django.views.generic import TemplateView
 
+from firstapp.forms import ContactUsForm
+
 
 # Create your views here.
 # def index(request):
@@ -44,7 +46,26 @@ def contactus(request):
         if len(phone) < 10 or len(phone) > 10:
             raise ValidationError("Phone number length is not right")
         query = request.POST["query"]
-        
+
         print(name + " " + email + " " + phone + " " + query)
-        
+
     return render(request, "firstapp/contactus.html")
+
+
+def contactus2(request):
+    if request.method == "POST":
+        form = ContactUsForm(request.POST)
+
+        if form.is_valid():  #! cleaned_data is created by is_valid()
+            if len(form.cleaned_data.get("query")) > 10:
+                form.add_error("query", "Query length is not right")  #! Approach 1 -> This one is better
+                return render(request, "firstapp/contactus2.html", {"form": form})
+            form.save()
+            return HttpResponse("Thank You")
+        else:
+            if len(form.cleaned_data.get("query")) > 10:
+                # form.add_error("query", "Query length is not right")
+                form.errors["__all__"] = ("Query length is not right. It should be in 10 digits.")  #! Approach 2
+            return render(request, "firstapp/contactus2.html", {"form": form})
+
+    return render(request, "firstapp/contactus2.html", {"form": ContactUsForm})
