@@ -1,6 +1,7 @@
 from django.forms import ValidationError
 from django.shortcuts import render, HttpResponse
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, FormView
+from django.urls import reverse_lazy, reverse
 
 from firstapp.forms import ContactUsForm
 
@@ -52,6 +53,7 @@ def contactus(request):
     return render(request, "firstapp/contactus.html")
 
 
+#! Functional based approach
 def contactus2(request):
     if request.method == "POST":
         form = ContactUsForm(request.POST)
@@ -69,3 +71,24 @@ def contactus2(request):
             return render(request, "firstapp/contactus2.html", {"form": form})
 
     return render(request, "firstapp/contactus2.html", {"form": ContactUsForm})
+
+#! Class based approach
+class ContactUs(FormView):
+    form_class = ContactUsForm
+    template_name = 'firstapp/contactus2.html'
+    #success_url = '/'   #hardcoded url
+    success_url = reverse_lazy('index')
+    def form_valid(self, form):
+        if len(form.cleaned_data.get('query'))>10:
+            form.add_error('query', 'Query length is not right')
+            return render(self.request, 'firstapp/contactus2.html', {'form':form})
+        form.save()
+        response = super().form_valid(form)
+        return response
+
+    def form_invalid(self, form):
+        if len(form.cleaned_data.get('query'))>10:
+            form.add_error('query', 'Query length is not right')
+            #form.errors['__all__'] = 'Query length is not right. It should be in 10 digits.'
+        response = super().form_invalid(form)
+        return response

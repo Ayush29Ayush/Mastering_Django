@@ -1,6 +1,6 @@
 {% extends 'firstapp/basic.html' %}
 {% load static %}
-{% comment %} {% load myfilters %} {% endcomment %}
+{% load myfilters %}
 {% block title %}
 {% endblock %}
 {% block css %}
@@ -20,6 +20,7 @@
         <label for="id_email" class="login-labels">Email Address*</label> 
         {{ form.email.errors }}
         {{ form.email|addclass:'form-control'|addplaceholder:'Email Address'}}
+        {% comment %} {{ form.email}} {% endcomment %}
         <label for="id_phone" class="login-labels">Phone No.*</label> 
         {{ form.phone.errors }}
         {{ form.phone|addclass:'form-control'|addplaceholder:'Password' }}
