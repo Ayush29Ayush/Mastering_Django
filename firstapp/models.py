@@ -222,3 +222,11 @@ class Deal(models.Model):
     user = models.ManyToManyField(CustomUser)
     # user = models.ManyToManyField(User)
     deal_name = models.CharField(max_length=255)
+
+
+class Contact(models.Model):
+    email = models.EmailField()
+    name = models.CharField(max_length=5)
+    phone_regex = RegexValidator( regex = r'^\d{10}$',message = "phone number should exactly be in 10 digits")
+    phone = models.CharField(max_length=255, validators=[phone_regex])
+    query = models.TextField()
